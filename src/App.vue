@@ -1,7 +1,12 @@
-<script setup></script>
+<script setup>
+import NavBar from '@/components/Layout/NavBar.vue'
+</script>
 
 <template>
-  <RouterLink to="/">Notes</RouterLink>
-  <RouterLink to="/stats">Stats</RouterLink>
-  <RouterView />
+  <div>
+    <NavBar />
+    <main class="container is-max-desktop px-2 py-4">
+      <RouterView />
+    </main>
+  </div>
 </template>
