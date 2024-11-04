@@ -25,11 +25,7 @@ const showMobileNav = ref(false)
         </a>
       </div>
 
-      <div
-        id="navbarBasicExample"
-        class="navbar-menu"
-        :class="{ 'is-active': showMobileNav }"
-      >
+      <div id="navbarBasicExample" class="navbar-menu" :class="{ 'is-active': showMobileNav }">
         <div class="navbar-end">
           <RouterLink
             @click="showMobileNav = false"
