@@ -40,8 +40,16 @@ useWatchCharacters(newNote)
       </template>
     </AddEditNote>
 
-    <div v-auto-animate>
+    <progress class="progress is-large is-success" v-if="notesStore.loading" />
+
+    <div v-else v-auto-animate>
       <NoteCard v-for="note in notesStore.notes" :key="note.id" :note />
+    </div>
+
+    <div v-if="!notesStore.notes.length">
+      <p class="is-size-4 has-text-centered has-text-grey-light is-family-monospace py-6">
+        No notes here yet
+      </p>
     </div>
   </div>
 </template>

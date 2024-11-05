@@ -1,11 +1,23 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import { v4 as uuiv4 } from 'uuid'
 import { db } from '@/libs/firebase'
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  orderBy,
+  query,
+  updateDoc,
+} from 'firebase/firestore'
+
+const notesCollectionRef = collection(db, 'notes')
 
 export const useNotesStore = defineStore('notes', {
   state: () => {
     return {
       notes: [],
+      loading: false,
     }
   },
 
@@ -25,20 +37,45 @@ export const useNotesStore = defineStore('notes', {
   },
 
   actions: {
-    addNote({ content }) {
-      const note = {
-        id: uuiv4(),
+    async getNotes() {
+      this.loading = true
+
+      const q = query(notesCollectionRef, orderBy('createdAt', 'desc'))
+
+      onSnapshot(q, querySnapshot => {
+        const notes = []
+        querySnapshot.forEach(doc => {
+          const note = {
+            id: doc.id,
+            ...doc.data(),
+          }
+
+          notes.push(note)
+        })
+
+        this.notes = notes
+        this.loading = false
+      })
+
+      // https://firebase.google.com/docs/firestore/query-data/listen?hl=pt-br#view_changes_between_snapshots
+      // @TODO -> unsubscibe
+    },
+
+    async addNote({ content }) {
+      await addDoc(notesCollectionRef, {
         content,
-      }
-      this.notes.unshift(note)
+        createdAt: new Date().toISOString(),
+      })
     },
-    removeNote({ id }) {
-      this.notes = this.notes.filter(note => note.id !== id)
+
+    async removeNote({ id }) {
+      await deleteDoc(doc(notesCollectionRef, id))
     },
-    updateNote({ id, content }) {
-      const note = this.notes.find(note => note.id === id)
-      if (!note) return
-      note.content = content
+
+    async updateNote({ id, content }) {
+      await updateDoc(doc(notesCollectionRef, id), {
+        content,
+      })
     },
   },
 })

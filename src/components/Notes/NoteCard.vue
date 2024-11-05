@@ -1,5 +1,6 @@
 <script setup>
 import DeleteNoteModal from '@/components/Notes/DeleteNoteModal.vue'
+import { useDateFormat } from '@vueuse/core'
 import { computed, reactive } from 'vue'
 
 const props = defineProps({
@@ -17,14 +18,22 @@ const noteLengthCalc = computed(() => {
 const modals = reactive({
   deleteNote: false,
 })
+
+const formatedDate = computed(() => {
+  return useDateFormat(new Date(props.note.createdAt), 'YYYY-MM-DD')
+})
 </script>
 
 <template>
   <div class="card mb-4">
     <div class="card-content">
       <div class="content">{{ props.note.content }}</div>
-      <div class="has-text-right has-text-grey-light mt-2">
-        <small>{{ noteLengthCalc }}</small>
+      <div class="columns is-mobile has-text-grey-light mt-2">
+        <small class="column">
+          {{ formatedDate }}
+        </small>
+
+        <small class="column has-text-right">{{ noteLengthCalc }}</small>
       </div>
     </div>
     <footer class="card-footer">
