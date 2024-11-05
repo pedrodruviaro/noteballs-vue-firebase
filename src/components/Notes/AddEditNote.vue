@@ -42,6 +42,7 @@ defineExpose({
           v-auto-focus
           v-model="content"
           :placeholder="props.placeholder"
+          maxlength="100"
         />
       </div>
     </div>
