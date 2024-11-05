@@ -1,20 +1,11 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { v4 as uuiv4 } from 'uuid'
+import { db } from '@/libs/firebase'
 
 export const useNotesStore = defineStore('notes', {
   state: () => {
     return {
-      notes: [
-        {
-          id: 'id1',
-          content:
-            '!!!Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quidem ipsa commodi sint ut ullam culpa nulla molestiae sunt quia qui maxime, enim uasi officiis aperiam fugit, corrupti omnis, eaque animi.',
-        },
-        {
-          id: 'id2',
-          content: 'Lorem ipsum dolor sit amet consectetur',
-        },
-      ],
+      notes: [],
     }
   },
 
